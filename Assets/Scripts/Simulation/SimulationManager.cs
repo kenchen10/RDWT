@@ -15,7 +15,7 @@ public class SimulationManager : MonoBehaviour
     { None, S2C, S2O, Zigzag };
 
     private enum PathSeedChoice
-    { Office, ExplorationSmall, ExplorationLarge, LongWalk, ZigZag };
+    { Office, ExplorationSmall, ExplorationLarge, LongWalk, ZigZag, TwoPoint };
 
     private enum ResetChoice
     { None, TwoOneTurn };
@@ -182,6 +182,15 @@ public class SimulationManager : MonoBehaviour
         return new VirtualPathGenerator.PathSeed(distanceSamplingDistribution, angleSamplingDistribution, waypointCount);
     }
 
+    private VirtualPathGenerator.PathSeed getPathSeedTwoPoint()
+    {
+        VirtualPathGenerator.SamplingDistribution distanceSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 1000, 1000);
+        VirtualPathGenerator.SamplingDistribution angleSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 0, 0);
+        int waypointCount = 2;
+        return new VirtualPathGenerator.PathSeed(distanceSamplingDistribution, angleSamplingDistribution, waypointCount);
+    }
+
+
     private void setUpExperimentFixedTrackingArea(PathSeedChoice pathSeedChoice, System.Type redirector, System.Type resetter)
     {
         // Initialize Values
@@ -213,6 +222,10 @@ public class SimulationManager : MonoBehaviour
 
             case PathSeedChoice.ZigZag:
                 pathSeeds.Add(getPathSeedZigzag());
+                break;
+
+            case PathSeedChoice.TwoPoint:
+                pathSeeds.Add(getPathSeedTwoPoint());
                 break;
         }
 
@@ -253,6 +266,10 @@ public class SimulationManager : MonoBehaviour
 
             case PathSeedChoice.ZigZag:
                 pathSeeds.Add(getPathSeedZigzag());
+                break;
+
+            case PathSeedChoice.TwoPoint:
+                pathSeeds.Add(getPathSeedTwoPoint());
                 break;
         }
 
@@ -296,6 +313,10 @@ public class SimulationManager : MonoBehaviour
 
             case PathSeedChoice.ZigZag:
                 pathSeeds.Add(getPathSeedZigzag());
+                break;
+
+            case PathSeedChoice.TwoPoint:
+                pathSeeds.Add(getPathSeedTwoPoint());
                 break;
         }
 
@@ -406,6 +427,7 @@ public class SimulationManager : MonoBehaviour
             }
             ((ZigZagRedirector)redirectionManager.redirector).waypoints = zigzagRedirectorWaypoints;
         }
+       
 
         // NO LONGER SUPPORTING DRAWING FULL VIRTUAL PATH AT BEGINNING
         //if (drawVirtualPath)
@@ -414,6 +436,13 @@ public class SimulationManager : MonoBehaviour
         // Set First Waypoint Position and Enable It
         redirectionManager.targetWaypoint.position = new Vector3(waypoints[0].x, redirectionManager.targetWaypoint.position.y, waypoints[0].y);
         waypointIterator = 0;
+
+        redirectionManager.targetWaypoint2.position = new Vector3(waypoints[waypointIterator + 1].x, redirectionManager.targetWaypoint.position.y, waypoints[waypointIterator + 1].y);
+        //how do i tell it's a twopoint experiment?
+        //if (this.pathSeed == TwoPoint)
+        //{
+
+        //}
 
         // POSTPONING THESE FOR SAFETY REASONS!
         //// Allow Walking
@@ -495,6 +524,15 @@ public class SimulationManager : MonoBehaviour
         waypoint.localScale = 0.3f * Vector3.one;
         waypoint.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
         waypoint.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0, 0.12f, 0));
+
+        Transform waypoint2 = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
+        Destroy(waypoint2.GetComponent<SphereCollider>());
+        redirectionManager.targetWaypoint2 = waypoint2;
+        waypoint2.name = "Simulated Waypoint 2";
+        waypoint2.position = 1.2f * Vector3.up + 1200 * Vector3.forward;
+        waypoint2.localScale = 0.3f * Vector3.one;
+        waypoint2.GetComponent<Renderer>().material.color = new Color(0, 1, 0.4f);
+        waypoint2.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0, 0.12f, 0.12f));
     }
 
     public void Initialize()
@@ -527,7 +565,7 @@ public class SimulationManager : MonoBehaviour
         //}
 
         // Setting Random Seed
-        Random.seed = VirtualPathGenerator.RANDOM_SEED;
+        Random.InitState(VirtualPathGenerator.RANDOM_SEED);
 
         // Make sure VSync doesn't slow us down
 
@@ -552,7 +590,7 @@ public class SimulationManager : MonoBehaviour
         //if (this.enabled)
         //    redirectionManager.userMovementManager.activateSimulatedWalker();
 
-        /*
+        /* 
         // Here we manually determine what we want to run
         //algorithms.Add(AlgorithmChoice.GreedyTransGain);
         //algorithms.Add(AlgorithmChoice.CenterBased);
@@ -588,7 +626,7 @@ public class SimulationManager : MonoBehaviour
         //initialConfigurations.Add(new InitialConfiguration(new Vector2(7.5f, 0), new Vector2(0, 1)));
         //initialConfigurations.Add(new InitialConfiguration(true)); // Random Config
         //initialConfigurations.Add(new InitialConfiguration(new Vector2(40, -40), new Vector2(0, 1)));
-        */
+       */
 
         //// MANUAL TESTING
         //redirectionManager.runInTestMode = true;
@@ -686,6 +724,7 @@ public class SimulationManager : MonoBehaviour
             }
         }
 
+        /**
         //setUpExperimentTrackingAreaSizePerformance(PathSeedChoice.Office, AlgorithmChoice.None);
         //setUpExperimentTrackingAreaSizePerformance(PathSeedChoice.Office, AlgorithmChoice.S2C);
         //setUpExperimentTrackingAreaSizePerformance(PathSeedChoice.Office, AlgorithmChoice.S2O);
@@ -769,7 +808,7 @@ public class SimulationManager : MonoBehaviour
         //setUpExperimentGainFactors(PathSeedChoice.LongWalk, AlgorithmChoice.CenterBasedTransGainSpeedUp);
         //setUpExperimentGainFactors(PathSeedChoice.LongWalk, AlgorithmChoice.S2C_CenterBasedTransGainSpeedUp);
         //setUpExperimentGainFactors(PathSeedChoice.LongWalk, AlgorithmChoice.S2O_CenterBasedTransGainSpeedUp);
-
+        */
         GenerateAllExperimentSetups();
 
         // Determine Initial Configurations If Random
@@ -1033,7 +1072,8 @@ public class SimulationManager : MonoBehaviour
                 endExperiment();
         }
         else
-        {
+        { 
+            //spawns new waypoint
             waypointIterator++;
             redirectionManager.targetWaypoint.position = new Vector3(waypoints[waypointIterator].x, redirectionManager.targetWaypoint.position.y, waypoints[waypointIterator].y);
         }
