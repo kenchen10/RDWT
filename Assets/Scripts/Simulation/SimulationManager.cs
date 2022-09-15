@@ -184,9 +184,9 @@ public class SimulationManager : MonoBehaviour
 
     private VirtualPathGenerator.PathSeed getPathSeedTwoPoint()
     {
-        VirtualPathGenerator.SamplingDistribution distanceSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 1000, 1000);
-        VirtualPathGenerator.SamplingDistribution angleSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 0, 0);
-        int waypointCount = 2;
+        VirtualPathGenerator.SamplingDistribution distanceSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 2, 4);
+        VirtualPathGenerator.SamplingDistribution angleSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, -180, 180);
+        int waypointCount = 3;
         return new VirtualPathGenerator.PathSeed(distanceSamplingDistribution, angleSamplingDistribution, waypointCount);
     }
 
