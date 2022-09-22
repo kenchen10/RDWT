@@ -12,7 +12,7 @@ public class SimulationManager : MonoBehaviour
     { FixedTrackedSpace, VaryingSizes, VaryingShapes };
 
     private enum AlgorithmChoice
-    { None, S2C, S2O, Zigzag };
+    { None, S2C, S2O, Zigzag, S2Target };
 
     private enum PathSeedChoice
     { Office, ExplorationSmall, ExplorationLarge, LongWalk, ZigZag, TwoPoint };
@@ -186,7 +186,7 @@ public class SimulationManager : MonoBehaviour
     {
         VirtualPathGenerator.SamplingDistribution distanceSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, 2, 4);
         VirtualPathGenerator.SamplingDistribution angleSamplingDistribution = new VirtualPathGenerator.SamplingDistribution(VirtualPathGenerator.DistributionType.Uniform, -180, 180);
-        int waypointCount = 3;
+        int waypointCount = 2;
         return new VirtualPathGenerator.PathSeed(distanceSamplingDistribution, angleSamplingDistribution, waypointCount);
     }
 
@@ -531,8 +531,8 @@ public class SimulationManager : MonoBehaviour
         waypoint2.name = "Simulated Waypoint 2";
         waypoint2.position = 1.2f * Vector3.up + 1200 * Vector3.forward;
         waypoint2.localScale = 0.3f * Vector3.one;
-        waypoint2.GetComponent<Renderer>().material.color = new Color(0, 1, 0.4f);
-        waypoint2.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0, 0.12f, 0.12f));
+        waypoint2.GetComponent<Renderer>().material.color = new Color(0, 0.2f, 1);
+        waypoint2.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0, 0.12f, 0.32f));
     }
 
     public void Initialize()
@@ -661,6 +661,9 @@ public class SimulationManager : MonoBehaviour
 
                 case AlgorithmChoice.Zigzag:
                     redirectorType = typeof(ZigZagRedirector);
+                    break;
+                case AlgorithmChoice.S2Target:
+                    redirectorType = typeof(S2TargetRedirector);
                     break;
                     //case 4:
                     //    algorithmChoice = AlgorithmChoice.CenterBasedTransGainSpeedUp;
