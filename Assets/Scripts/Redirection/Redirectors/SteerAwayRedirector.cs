@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Redirection;
 
-public class SteerAwayRedirector : MonoBehaviour
+public class SteerAwayRedirector : SteerToRedirector
 {
     private const float SA_BEARING_ANGLE_THRESHOLD_IN_DEGREE = 160;
 
@@ -25,7 +25,7 @@ public class SteerAwayRedirector : MonoBehaviour
             if (noTmpTarget)
             {
                 tmpTarget = new GameObject("SA Temp Target");
-                tmpTarget.transform.position = redirectionManager.currPos + S2T_TEMP_TARGET_DISTANCE * (Quaternion.Euler(0, -directionToTarget * 90, 0) * redirectionManager.currDir);
+                tmpTarget.transform.position = redirectionManager.currPos + SA_TEMP_TARGET_DISTANCE * (Quaternion.Euler(0, -directionToTarget * 90, 0) * redirectionManager.currDir);
                 tmpTarget.transform.parent = transform;
                 noTmpTarget = false;
             }

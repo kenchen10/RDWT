@@ -88,6 +88,8 @@ public class RedirectionManager : MonoBehaviour
     [HideInInspector]
     public Transform targetWaypoint2;
 
+    public Transform avoidWaypoint;
+
     [HideInInspector]
     public bool runInTestMode = false;
 

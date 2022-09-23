@@ -12,7 +12,7 @@ public class SimulationManager : MonoBehaviour
     { FixedTrackedSpace, VaryingSizes, VaryingShapes };
 
     private enum AlgorithmChoice
-    { None, S2C, S2O, Zigzag, S2Target };
+    { None, S2C, S2O, Zigzag, S2Target, SteerAway };
 
     private enum PathSeedChoice
     { Office, ExplorationSmall, ExplorationLarge, LongWalk, ZigZag, TwoPoint };
@@ -664,6 +664,9 @@ public class SimulationManager : MonoBehaviour
                     break;
                 case AlgorithmChoice.S2Target:
                     redirectorType = typeof(S2TargetRedirector);
+                    break;
+                case AlgorithmChoice.SteerAway:
+                    redirectorType = typeof(SteerAwayRedirector);
                     break;
                     //case 4:
                     //    algorithmChoice = AlgorithmChoice.CenterBasedTransGainSpeedUp;
