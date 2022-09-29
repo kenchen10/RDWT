@@ -277,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11481868, guid: 5edd4813c2b91c744b86f9b5db962f68, type: 3}
       propertyPath: condAlgorithm
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11481868, guid: 5edd4813c2b91c744b86f9b5db962f68, type: 3}
       propertyPath: condExperiment

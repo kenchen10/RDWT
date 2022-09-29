@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Redirection;
+using static RedirectionManager;
 
 public class S2CRedirector : SteerToRedirector {
 
@@ -14,12 +15,19 @@ public class S2CRedirector : SteerToRedirector {
 
     public override void PickRedirectionTarget()
     {
+        //
         Vector3 trackingAreaPosition = Utilities.FlattenedPos3D(redirectionManager.trackedSpace.position);
         Vector3 userToCenter = trackingAreaPosition - redirectionManager.currPos;
 
         //Compute steering target for S2C
+        //find angle between user and center of which space?
         float bearingToCenter = Vector3.Angle(userToCenter, redirectionManager.currDir);
+
         float directionToCenter = Utilities.GetSignedAngle(redirectionManager.currDir, userToCenter);
+
+
+        currentTarget = this.redirectionManager.targetWaypoint;
+
         if (bearingToCenter >= S2C_BEARING_ANGLE_THRESHOLD_IN_DEGREE && !dontUseTempTargetInS2C)
         {
             //Generate temporary target
@@ -34,7 +42,8 @@ public class S2CRedirector : SteerToRedirector {
         }
         else
         {
-            currentTarget = redirectionManager.trackedSpace;
+            currentTarget = currentTarget;
+            //currentTarget = redirectionManager.trackedSpace;
             if (!noTmpTarget)
             {
                 GameObject.Destroy(tmpTarget);

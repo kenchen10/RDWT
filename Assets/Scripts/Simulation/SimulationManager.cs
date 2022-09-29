@@ -958,21 +958,6 @@ public class SimulationManager : MonoBehaviour
 
     private void AdjustSnapshotGeneratorDimensions()
     {
-        //if (setup.trackingSizeShape.x > setup.trackingSizeShape.z)
-        //{
-        //    redirectionManager.screenshotGenerator.resWidth = ScreenshotGenerator.maxResWidthOrHeight;
-        //    redirectionManager.screenshotGenerator.resHeight = (int)Mathf.Ceil(ScreenshotGenerator.maxResWidthOrHeight * ((setup.trackingSizeShape.z + SCREENSHOT_EXTRA_COVERAGE_BUFFER) / (setup.trackingSizeShape.x + SCREENSHOT_EXTRA_COVERAGE_BUFFER)));
-        //}
-        //else if (setup.trackingSizeShape.x < setup.trackingSizeShape.z)
-        //{
-        //    redirectionManager.screenshotGenerator.resHeight = ScreenshotGenerator.maxResWidthOrHeight;
-        //    redirectionManager.screenshotGenerator.resWidth = (int)Mathf.Ceil(ScreenshotGenerator.maxResWidthOrHeight * ((setup.trackingSizeShape.x + SCREENSHOT_EXTRA_COVERAGE_BUFFER) / (setup.trackingSizeShape.z + SCREENSHOT_EXTRA_COVERAGE_BUFFER)));
-        //}
-        //else
-        //{
-        //    redirectionManager.screenshotGenerator.resHeight = ScreenshotGenerator.maxResWidthOrHeight;
-        //    redirectionManager.screenshotGenerator.resWidth = ScreenshotGenerator.maxResWidthOrHeight;
-        //}
         print("AdjustSnapshotGeneratorDimensions NOT IMPLEMENTED.");
     }
 

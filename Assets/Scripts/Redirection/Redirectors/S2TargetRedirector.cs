@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Redirection;
 
-public class S2TargetRedirector : SteerToRedirector
+public class S2TargetRedirector : S2TNaiveRedirector
 {
     
     private const float S2T_BEARING_ANGLE_THRESHOLD_IN_DEGREE = 160;
@@ -11,9 +11,10 @@ public class S2TargetRedirector : SteerToRedirector
     //active waypoint is replacing generated temp waypoint?? lets try with it still there.
     private const float S2T_TEMP_TARGET_DISTANCE = 4;
     //active waypoint from redirectionManager.cs = public Transform targetWaypoint;
-
+    /*
     public override void PickRedirectionTarget()
     {
+        //did i actually change anything in this.
         Vector3 trackingAreaPosition = Utilities.FlattenedPos3D(redirectionManager.trackedSpace.position);
         Vector3 userToTarget = trackingAreaPosition - redirectionManager.currPos;
 
@@ -42,6 +43,6 @@ public class S2TargetRedirector : SteerToRedirector
             }
         }
     }
-
+    */
 
 }
