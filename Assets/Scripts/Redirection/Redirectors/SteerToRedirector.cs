@@ -18,7 +18,7 @@ public abstract class SteerToRedirector : Redirector {
     private const float SMOOTHING_FACTOR = 0.125f; // Smoothing factor for redirection rotations
 
     // Reference Parameters
-    protected Transform currentTarget; //Where the participant  is currently directed?
+    public Transform currentTarget; //Where the participant  is currently directed?
     protected GameObject tmpTarget;
 
     // State Parameters

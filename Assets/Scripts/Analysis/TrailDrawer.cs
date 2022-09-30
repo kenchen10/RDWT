@@ -36,8 +36,14 @@ public class TrailDrawer : MonoBehaviour
 
     private bool isLogging;
 
+    private Quaternion iniRot;
+    private Vector3 iniPos;
+    // private SteerToRedirector str;
+    public GameObject go;
+ 
     private void Awake()
     {
+        // str = go.GetComponent<SteerToRedirector>();
         trailParent = new GameObject("Trails").transform;
         trailParent.parent = this.transform;
         trailParent.position = Vector3.zero;
@@ -57,6 +63,11 @@ public class TrailDrawer : MonoBehaviour
             }
         }
     }
+
+    // private void Start()
+    // {
+    //     go = GameObject.FindGameObjectWithTag("Ant");
+    // }
 
     private void OnEnable()
     {
@@ -113,6 +124,12 @@ public class TrailDrawer : MonoBehaviour
         trail.localPosition = Vector3.zero;
         trail.localRotation = Quaternion.identity;
         trail.gameObject.layer = trailLayer;
+        if (string.Equals(trailName, REAL_TRAIL_NAME)){
+            Debug.Log("---------------------------------!");
+            Debug.Log(trailName);
+            iniRot = trail.rotation;
+            iniPos = trail.position;
+        }
     }
 
     // Update is called once per frame
@@ -121,22 +138,34 @@ public class TrailDrawer : MonoBehaviour
         if (isLogging)
         {
             if (drawRealTrail)
-                UpdateTrailPoints(realTrailVertices, realTrail, realTrailMesh);
+            {
+                realTrail.rotation = iniRot;
+                realTrail.position = iniPos;
+                UpdateTrailPoints(REAL_TRAIL_NAME, realTrailVertices, realTrail, realTrailMesh);
+            }
             if (drawVirtualTrail)
             {
                 // Reset Position of Virtual Trail
-                virtualTrail.position = Vector3.zero;
                 virtualTrail.rotation = Quaternion.identity;
+                virtualTrail.position = Vector3.zero;
 
-                UpdateTrailPoints(virtualTrailVertices, virtualTrail, virtualTrailMesh, 2 * PATH_HEIGHT);
+                UpdateTrailPoints(VIRTUAL_TRAIL_NAME, virtualTrailVertices, virtualTrail, virtualTrailMesh, 2 * PATH_HEIGHT);
             }
         }
+        // realTrail.rotation = iniRot;
+        realTrail.position = iniPos;
     }
 
-    private void UpdateTrailPoints(List<Vector3> vertices, Transform relativeTransform, Mesh mesh, float pathHeight = PATH_HEIGHT)
+    private void UpdateTrailPoints(string trailName, List<Vector3> vertices, Transform relativeTransform, Mesh mesh, float pathHeight = PATH_HEIGHT)
     {
-        Vector3 currentPoint = Utilities.FlattenedPos3D(redirectionManager.headTransform.position, pathHeight);
-        currentPoint = Utilities.GetRelativePosition(currentPoint, relativeTransform);
+        Vector3 currentPoint = Utilities.FlattenedPos3D(Quaternion.Inverse(transform.rotation)*(redirectionManager.headTransform.position - transform.position), pathHeight);
+        if (string.Equals(trailName, VIRTUAL_TRAIL_NAME)){
+            currentPoint = Utilities.FlattenedPos3D(redirectionManager.headTransform.position, pathHeight);
+            currentPoint = Utilities.GetRelativePosition(currentPoint, relativeTransform);
+        }
+        // currentPoint = iniRot*(currentPoint + iniPos);
+        // realTrail.rotation = iniRot;
+        // realTrail.position = iniPos;
         if (vertices.Count == 0)
         {
             vertices.Add(currentPoint);
@@ -146,6 +175,8 @@ public class TrailDrawer : MonoBehaviour
             vertices.Add(currentPoint);
             UpdateLine(mesh, vertices.ToArray(), Vector3.up, PATH_WIDTH);
         }
+        // realTrail.rotation = iniRot;
+        // realTrail.position = iniPos;
     }
 
     /// <summary>
